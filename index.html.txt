@@ -1,0 +1,955 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tech Investors Club | Сообщество технологических инвесторов России</title>
+    
+    <!-- SEO мета-теги -->
+    <meta name="description" content="Tech Investors Club - создаем сообщество технологических инвесторов с нуля. Присоединяйтесь к основателям, изучайте инвестиции в IT, AI, blockchain вместе.">
+    <meta name="keywords" content="технологические инвестиции, сообщество инвесторов, обучение инвестициям, стартапы, венчурные инвестиции">
+    <meta name="author" content="Tech Investors Club">
+    
+    <!-- Open Graph -->
+    <meta property="og:title" content="Tech Investors Club - Сообщество инвесторов">
+    <meta property="og:description" content="Создаем сильное сообщество технологических инвесторов в России и СНГ">
+    <meta property="og:type" content="website">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Базовые стили и сброс */
+        * { 
+            margin: 0; 
+            padding: 0; 
+            box-sizing: border-box; 
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+        }
+        
+        :root {
+            --primary-bg: #0f172a;
+            --secondary-bg: #1e293b;
+            --accent-gradient: linear-gradient(135deg, #60a5fa, #8b5cf6);
+            --text-primary: #f8fafc;
+            --text-secondary: #cbd5e1;
+            --text-muted: #94a3b8;
+            --card-bg: rgba(255, 255, 255, 0.05);
+            --card-border: rgba(255, 255, 255, 0.1);
+            --border-radius: 16px;
+            --transition: all 0.3s ease;
+        }
+        
+        body { 
+            background: var(--primary-bg); 
+            color: var(--text-primary); 
+            line-height: 1.6;
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+        }
+        
+        html {
+            scroll-behavior: smooth;
+        }
+        
+        /* Контейнеры и сетки */
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        .section {
+            padding: 80px 0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        
+        /* Индикатор прокрутки */
+        .scroll-indicator {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: var(--text-secondary);
+            font-size: 1.2rem;
+            animation: bounce 2s infinite;
+            z-index: 100;
+            text-align: center;
+            background: rgba(15, 23, 42, 0.8);
+            padding: 10px 20px;
+            border-radius: 25px;
+            border: 1px solid var(--card-border);
+            backdrop-filter: blur(10px);
+        }
+        
+        .scroll-indicator i {
+            margin-right: 8px;
+        }
+        
+        .scroll-indicator.mobile {
+            display: none;
+        }
+        
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {
+                transform: translateX(-50%) translateY(0);
+            }
+            40% {
+                transform: translateX(-50%) translateY(-10px);
+            }
+            60% {
+                transform: translateX(-50%) translateY(-5px);
+            }
+        }
+        
+        /* Боковая навигация */
+        .side-nav {
+            position: fixed;
+            right: 30px;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 100;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            background: rgba(15, 23, 42, 0.8);
+            padding: 20px 15px;
+            border-radius: 25px;
+            border: 1px solid var(--card-border);
+            backdrop-filter: blur(10px);
+        }
+        
+        .nav-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: var(--text-muted);
+            cursor: pointer;
+            transition: var(--transition);
+            position: relative;
+        }
+        
+        .nav-dot.active {
+            background: #60a5fa;
+            transform: scale(1.2);
+        }
+        
+        .nav-dot:hover::after {
+            content: attr(data-title);
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: var(--secondary-bg);
+            color: var(--text-primary);
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 0.8rem;
+            white-space: nowrap;
+        }
+        
+        /* Мобильная навигация */
+        .mobile-nav {
+            display: none;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: var(--primary-bg);
+            border-top: 1px solid var(--card-border);
+            padding: 15px;
+            z-index: 100;
+        }
+        
+        .mobile-nav-items {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+        }
+        
+        .mobile-nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.8rem;
+            transition: var(--transition);
+        }
+        
+        .mobile-nav-item.active {
+            color: #60a5fa;
+        }
+        
+        .mobile-nav-item i {
+            font-size: 1.2rem;
+            margin-bottom: 5px;
+        }
+        
+        /* Герой секция */
+        .hero {
+            background: 
+                linear-gradient(135deg, var(--primary-bg) 0%, var(--secondary-bg) 50%, #334155 100%),
+                radial-gradient(circle at 20% 80%, rgba(99, 102, 241, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(139, 92, 246, 0.1) 0%, transparent 50%);
+            color: white;
+            padding: 100px 0;
+            text-align: center;
+            position: relative;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .hero-content {
+            max-width: 800px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 2;
+            padding: 0 20px;
+        }
+        
+        .logo {
+            font-size: clamp(2.2rem, 5vw, 3.5rem);
+            margin-bottom: 15px;
+            font-weight: 800;
+            background: var(--accent-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: -0.02em;
+        }
+        
+        .tagline {
+            font-size: clamp(0.9rem, 2.5vw, 1.1rem);
+            color: var(--text-secondary);
+            margin-bottom: 40px;
+            font-weight: 300;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+        }
+        
+        .hero h1 {
+            font-size: clamp(1.8rem, 5vw, 3.2rem);
+            margin-bottom: 25px;
+            font-weight: 700;
+            line-height: 1.1;
+        }
+        
+        .hero h1 .accent {
+            background: var(--accent-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .hero p {
+            font-size: clamp(1rem, 3vw, 1.3rem);
+            margin-bottom: 50px;
+            color: var(--text-secondary);
+            line-height: 1.6;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .early-bird {
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 20px;
+            font-size: clamp(0.8rem, 2vw, 0.9rem);
+            font-weight: 600;
+            display: inline-block;
+            margin-bottom: 20px;
+        }
+        
+        .founding-members {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin: 50px 0;
+            flex-wrap: wrap;
+        }
+        
+        .founding-benefit {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: var(--card-bg);
+            padding: 12px 20px;
+            border-radius: 25px;
+            border: 1px solid var(--card-border);
+            backdrop-filter: blur(10px);
+            transition: var(--transition);
+            font-size: clamp(0.9rem, 2vw, 1rem);
+        }
+        
+        .founding-benefit:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateY(-2px);
+        }
+        
+        .benefit-icon {
+            font-size: 1.2rem;
+        }
+        
+        /* Кнопки CTA */
+        .cta-button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            background: var(--accent-gradient);
+            color: white;
+            padding: 18px 40px;
+            border-radius: 15px;
+            text-decoration: none;
+            font-size: clamp(1rem, 2.5vw, 1.2rem);
+            font-weight: 600;
+            transition: var(--transition);
+            box-shadow: 0 8px 30px rgba(99, 102, 241, 0.3);
+            border: none;
+            cursor: pointer;
+            margin: 20px 0;
+            text-align: center;
+            width: 100%;
+            max-width: 350px;
+        }
+        
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(99, 102, 241, 0.4);
+        }
+        
+        .button-icon {
+            font-size: 1.3rem;
+        }
+
+        /* Секция особенностей */
+        .features {
+            background: var(--secondary-bg);
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: clamp(1.8rem, 4vw, 2.5rem);
+            margin-bottom: 60px;
+            font-weight: 700;
+        }
+
+        .section-title .accent {
+            background: var(--accent-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(min(100%, 350px), 1fr));
+            gap: 30px;
+        }
+
+        .feature-card {
+            background: var(--card-bg);
+            padding: 30px 25px;
+            border-radius: var(--border-radius);
+            border: 1px solid var(--card-border);
+            backdrop-filter: blur(10px);
+            transition: var(--transition);
+            height: 100%;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(99, 102, 241, 0.3);
+        }
+
+        .card-icon {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            display: block;
+        }
+
+        .feature-card h3 {
+            font-size: 1.3rem;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+
+        .feature-card p {
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        /* Секция основателя */
+        .community {
+            background: var(--primary-bg);
+        }
+
+        .founder-section {
+            text-align: center;
+            max-width: 600px;
+            margin: 0 auto 60px;
+        }
+
+        .founder-avatar {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: var(--accent-gradient);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            margin: 0 auto 20px;
+        }
+
+        .founder-quote {
+            font-size: clamp(1rem, 3vw, 1.2rem);
+            color: var(--text-secondary);
+            font-style: italic;
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+
+        .founder-name {
+            font-weight: 600;
+            color: #60a5fa;
+        }
+
+        /* Статистика сообщества */
+        .community-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(min(100%, 150px), 1fr));
+            gap: 20px;
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .stat-item {
+            padding: 25px 15px;
+        }
+
+        .stat-number {
+            font-size: clamp(2rem, 5vw, 3rem);
+            font-weight: 800;
+            background: var(--accent-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        .stat-label {
+            color: var(--text-secondary);
+            font-size: clamp(0.9rem, 2vw, 1.1rem);
+        }
+
+        /* Дорожная карта */
+        .roadmap {
+            background: var(--secondary-bg);
+        }
+
+        .roadmap-steps {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
+            gap: 25px;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .roadmap-step {
+            background: var(--card-bg);
+            padding: 25px 20px;
+            border-radius: var(--border-radius);
+            border-left: 4px solid #60a5fa;
+            height: 100%;
+        }
+
+        .step-number {
+            background: #60a5fa;
+            color: white;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            margin-bottom: 15px;
+            font-size: 1rem;
+        }
+
+        .roadmap-step h3 {
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+        }
+
+        .roadmap-step p {
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        /* Финальный CTA */
+        .final-cta {
+            background: linear-gradient(135deg, var(--secondary-bg) 0%, #334155 100%);
+            text-align: center;
+        }
+
+        /* Футер */
+        .footer {
+            padding: 40px 20px;
+            background: var(--primary-bg);
+            text-align: center;
+            border-top: 1px solid var(--card-border);
+        }
+
+        .footer p {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        .disclaimer {
+            background: var(--card-bg);
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 40px;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* Анимации */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .fade-in {
+            animation: fadeInUp 0.6s ease-out;
+        }
+
+        /* Адаптивность для очень маленьких экранов */
+        @media (max-width: 768px) {
+            .side-nav {
+                display: none;
+            }
+            
+            .mobile-nav {
+                display: block;
+            }
+            
+            .scroll-indicator.desktop {
+                display: none;
+            }
+            
+            .scroll-indicator.mobile {
+                display: block;
+            }
+            
+            .section {
+                padding: 60px 0;
+                min-height: 100vh;
+            }
+            
+            .hero {
+                padding: 80px 0;
+                min-height: 100vh;
+            }
+            
+            .founding-members {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .founding-benefit {
+                width: 100%;
+                max-width: 280px;
+                justify-content: center;
+            }
+            
+            .feature-card, .roadmap-step {
+                padding: 20px 15px;
+            }
+            
+            .community-stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .stat-item {
+                padding: 20px 10px;
+            }
+        }
+
+        /* Планшеты и небольшие экраны */
+        @media (min-width: 769px) and (max-width: 1024px) {
+            .side-nav {
+                right: 20px;
+            }
+            
+            .features-grid, .roadmap-steps {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .community-stats {
+                grid-template-columns: repeat(4, 1fr);
+            }
+        }
+
+        /* Десктопы */
+        @media (min-width: 1025px) {
+            .features-grid, .roadmap-steps {
+                grid-template-columns: repeat(3, 1fr);
+            }
+            
+            .community-stats {
+                grid-template-columns: repeat(4, 1fr);
+            }
+            
+            .cta-button {
+                width: auto;
+            }
+        }
+
+        /* Большие десктопы */
+        @media (min-width: 1440px) {
+            .container {
+                max-width: 1400px;
+            }
+        }
+
+        /* Поддержка касаний для мобильных */
+        @media (hover: none) and (pointer: coarse) {
+            .founding-benefit:hover,
+            .feature-card:hover,
+            .cta-button:hover {
+                transform: none;
+            }
+            
+            .nav-dot:hover::after {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Боковая навигация для ПК -->
+    <div class="side-nav">
+        <div class="nav-dot active" data-title="Главная" onclick="scrollToSection('hero')"></div>
+        <div class="nav-dot" data-title="Что строим" onclick="scrollToSection('features')"></div>
+        <div class="nav-dot" data-title="Основатель" onclick="scrollToSection('community')"></div>
+        <div class="nav-dot" data-title="План" onclick="scrollToSection('roadmap')"></div>
+        <div class="nav-dot" data-title="Присоединиться" onclick="scrollToSection('final-cta')"></div>
+    </div>
+
+    <!-- Индикатор прокрутки -->
+    <div class="scroll-indicator desktop">
+        <i class="fas fa-chevron-down"></i> Прокрутите вниз
+    </div>
+    <div class="scroll-indicator mobile">
+        <i class="fas fa-chevron-down"></i> Листайте вниз
+    </div>
+
+    <!-- Мобильная навигация -->
+    <div class="mobile-nav">
+        <div class="mobile-nav-items">
+            <a href="#hero" class="mobile-nav-item active">
+                <i class="fas fa-home"></i>
+                <span>Главная</span>
+            </a>
+            <a href="#features" class="mobile-nav-item">
+                <i class="fas fa-rocket"></i>
+                <span>Проект</span>
+            </a>
+            <a href="#community" class="mobile-nav-item">
+                <i class="fas fa-users"></i>
+                <span>Сообщество</span>
+            </a>
+            <a href="#roadmap" class="mobile-nav-item">
+                <i class="fas fa-map"></i>
+                <span>План</span>
+            </a>
+            <a href="#final-cta" class="mobile-nav-item">
+                <i class="fas fa-sign-in-alt"></i>
+                <span>Войти</span>
+            </a>
+        </div>
+    </div>
+
+    <!-- Герой секция -->
+    <section class="hero" id="hero">
+        <div class="hero-content fade-in">
+            <div class="logo">Tech Investors Club</div>
+            <div class="tagline">Создаем сообщество с нуля • Присоединяйся к основателям</div>
+            
+            <div class="early-bird">🎯 ТЫ БУДЕШЬ ПЕРВЫМ!</div>
+            
+            <h1>Создаем сообщество <span class="accent">технологических инвесторов</span> вместе</h1>
+            <p>Я только начинаю и ищу единомышленников, с которыми мы построим сильное сообщество для обучения и обмена опытом в технологических инвестициях</p>
+            
+            <div class="founding-members">
+                <div class="founding-benefit">
+                    <span class="benefit-icon">👑</span>
+                    <span>Стань основателем</span>
+                </div>
+                <div class="founding-benefit">
+                    <span class="benefit-icon">💡</span>
+                    <span>Влияй на развитие</span>
+                </div>
+                <div class="founding-benefit">
+                    <span class="benefit-icon">🚀</span>
+                    <span>Рости вместе с нами</span>
+                </div>
+            </div>
+            
+            <a href="https://t.me/Investors_Club_RU" class="cta-button">
+                <span class="button-icon">⭐</span>
+                Стать первым участником
+            </a>
+            <p style="color: var(--text-muted); font-size: 0.9rem; margin-top: 20px;">
+                Начинаем с чистого листа • Твое мнение будет важно • Поможем друг другу расти
+            </p>
+        </div>
+    </section>
+
+    <!-- Что строим -->
+    <section class="features section" id="features">
+        <div class="container">
+            <h2 class="section-title fade-in">Что мы <span class="accent">построим вместе</span></h2>
+            
+            <div class="features-grid">
+                <div class="feature-card fade-in">
+                    <span class="card-icon">🤝</span>
+                    <h3>Сообщество единомышленников</h3>
+                    <p>Создадим пространство, где можно открыто обсуждать инвестиции, делиться ошибками и успехами, задавать любые вопросы</p>
+                </div>
+                
+                <div class="feature-card fade-in">
+                    <span class="card-icon">📚</span>
+                    <h3>Базу знаний</h3>
+                    <p>Вместе соберем библиотеку полезных материалов, гайдов и кейсов по технологическим инвестициям</p>
+                </div>
+                
+                <div class="feature-card fade-in">
+                    <span class="card-icon">🎯</span>
+                    <h3>Культуру взаимопомощи</h3>
+                    <p>Помогать друг другу разбираться в сложных темах, делиться инсайтами и поддерживать в инвестиционном пути</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Основатель -->
+    <section class="community section" id="community">
+        <div class="container">
+            <div class="founder-section fade-in">
+                <div class="founder-avatar">👨‍💼</div>
+                <div class="founder-quote">
+                    "Я несколько лет изучаю технологические инвестиции и хочу создать сообщество, которого мне самому не хватало когда я начинал. Место без 'гуру', с реальными знаниями и взаимной поддержкой."
+                </div>
+                <div class="founder-name">— Основатель сообщества</div>
+            </div>
+
+            <h2 class="section-title fade-in">Мы в <span class="accent">начале пути</span></h2>
+            
+            <div class="community-stats fade-in">
+                <div class="stat-item">
+                    <span class="stat-number">1</span>
+                    <span class="stat-label">Основатель</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number">0</span>
+                    <span class="stat-label">Участников пока</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number">∞</span>
+                    <span class="stat-label">Возможностей</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number">100%</span>
+                    <span class="stat-label">Свободное место для тебя</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Дорожная карта -->
+    <section class="roadmap section" id="roadmap">
+        <div class="container">
+            <h2 class="section-title fade-in">Наш <span class="accent">план</span></h2>
+            
+            <div class="roadmap-steps">
+                <div class="roadmap-step fade-in">
+                    <div class="step-number">1</div>
+                    <h3>Собрать первых 10 участников</h3>
+                    <p>Найти единомышленников, которые хотят развиваться в технологических инвестициях</p>
+                </div>
+                
+                <div class="roadmap-step fade-in">
+                    <div class="step-number">2</div>
+                    <h3>Создать ядро сообщества</h3>
+                    <p>Вместе определить правила, форматы общения и направления развития</p>
+                </div>
+                
+                <div class="roadmap-step fade-in">
+                    <div class="step-number">3</div>
+                    <h3>Запустить образовательный контент</h3>
+                    <p>Начать делиться знаниями, разбирать кейсы и проводить обсуждения</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Финальный CTA -->
+    <section class="final-cta section" id="final-cta">
+        <div class="container">
+            <h2 class="section-title fade-in">Готов быть первым?</h2>
+            <p style="font-size: clamp(1rem, 3vw, 1.2rem); color: var(--text-secondary); margin-bottom: 40px; max-width: 600px; margin-left: auto; margin-right: auto;">
+                Присоединяйся к созданию сообщества с нуля. Твои идеи и участие будут фундаментом всего, что мы построим вместе.
+            </p>
+            <a href="https://t.me/Investors_Club_RU" class="cta-button fade-in">
+                <span class="button-icon">🚀</span>
+                Стать основателем
+            </a>
+            
+            <div class="disclaimer fade-in">
+                💡 Мы создаем образовательное сообщество для обмена опытом. Никаких гарантий доходов, только реальные знания и поддержка.
+            </div>
+        </div>
+    </section>
+
+    <!-- Футер -->
+    <footer class="footer">
+        <div class="container">
+            <p>© 2025 Tech Investors Club. Сообщество технологических инвесторов</p>
+            <p style="color: var(--text-muted); font-size: 0.8rem; margin-top: 10px;">
+                Обучение инвестициям в технологии • Поддержка 24/7 • Бесплатное участие
+            </p>
+        </div>
+    </footer>
+
+    <script>
+        // Функция для прокрутки к секции
+        function scrollToSection(sectionId) {
+            document.getElementById(sectionId).scrollIntoView({
+                behavior: 'smooth'
+            });
+        }
+
+        // Обновление активной точки навигации при скролле
+        document.addEventListener('DOMContentLoaded', function() {
+            const sections = document.querySelectorAll('.section, .hero');
+            const navDots = document.querySelectorAll('.nav-dot');
+            const mobileNavItems = document.querySelectorAll('.mobile-nav-item');
+            
+            // Анимация появления элементов
+            const fadeElements = document.querySelectorAll('.fade-in');
+            
+            const fadeInOnScroll = function() {
+                fadeElements.forEach(element => {
+                    const elementTop = element.getBoundingClientRect().top;
+                    const elementVisible = 150;
+                    
+                    if (elementTop < window.innerHeight - elementVisible) {
+                        element.style.opacity = "1";
+                        element.style.transform = "translateY(0)";
+                    }
+                });
+            };
+            
+            // Инициализация - скрываем элементы перед анимацией
+            fadeElements.forEach(element => {
+                element.style.opacity = "0";
+                element.style.transform = "translateY(30px)";
+                element.style.transition = "opacity 0.6s ease, transform 0.6s ease";
+            });
+            
+            // Обновление навигации при скролле
+            const updateNavigation = function() {
+                let currentSection = '';
+                
+                sections.forEach(section => {
+                    const sectionTop = section.offsetTop;
+                    const sectionHeight = section.clientHeight;
+                    if (pageYOffset >= (sectionTop - sectionHeight / 3)) {
+                        currentSection = section.getAttribute('id');
+                    }
+                });
+                
+                // Обновление точек навигации
+                navDots.forEach(dot => {
+                    dot.classList.remove('active');
+                    if (dot.getAttribute('data-title') === getSectionTitle(currentSection)) {
+                        dot.classList.add('active');
+                    }
+                });
+                
+                // Обновление мобильной навигации
+                mobileNavItems.forEach(item => {
+                    item.classList.remove('active');
+                    if (item.getAttribute('href') === '#' + currentSection) {
+                        item.classList.add('active');
+                    }
+                });
+            };
+            
+            // Вспомогательная функция для получения заголовка секции
+            function getSectionTitle(sectionId) {
+                const titles = {
+                    'hero': 'Главная',
+                    'features': 'Что строим',
+                    'community': 'Основатель',
+                    'roadmap': 'План',
+                    'final-cta': 'Присоединиться'
+                };
+                return titles[sectionId] || '';
+            }
+            
+            // Скрытие индикатора прокрутки после первого скролла
+            let scrolled = false;
+            const scrollIndicator = document.querySelector('.scroll-indicator');
+            
+            const hideScrollIndicator = function() {
+                if (!scrolled) {
+                    scrolled = true;
+                    scrollIndicator.style.opacity = '0';
+                    setTimeout(() => {
+                        scrollIndicator.style.display = 'none';
+                    }, 500);
+                }
+            };
+            
+            // Слушатели событий
+            window.addEventListener('scroll', function() {
+                updateNavigation();
+                fadeInOnScroll();
+                hideScrollIndicator();
+            });
+            
+            // Инициализация при загрузке
+            updateNavigation();
+            fadeInOnScroll();
+            
+            // Обработчики для мобильной навигации
+            mobileNavItems.forEach(item => {
+                item.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const targetId = this.getAttribute('href').substring(1);
+                    scrollToSection(targetId);
+                });
+            });
+        });
+    </script>
+</body>
+</html>
